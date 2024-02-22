@@ -35,11 +35,8 @@ export default {
     async fetchGames() {
       const options = {
         method: 'GET',
-        url: 'https://free-to-play-games-database.p.rapidapi.com/api/filter',
-        params: {
-          tag: 'shooter',
-          platform: 'pc'
-        },
+        url: 'https://free-to-play-games-database.p.rapidapi.com/api/games',
+
         headers: {
           'X-RapidAPI-Key': '6a308b9d12msh4e276d6fecfde35p1d4559jsn7f5a98e751ec',
           'X-RapidAPI-Host': 'free-to-play-games-database.p.rapidapi.com'
@@ -55,6 +52,8 @@ export default {
           name: game.title,
           description: game.short_description,
           image: game.thumbnail,
+          category:game.category
+          
         }));
       } catch (error) {
         console.error('Fehler beim Laden der Spiele:', error);
@@ -71,8 +70,8 @@ export default {
 </script>
 
 <style>
-
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   width: 100%;
@@ -83,7 +82,8 @@ html, body {
 /* Grundlegende Stile */
 .container {
   display: flex;
-  flex-wrap: nowrap; /* Verhindert das Umfließen der Kinder */
+  flex-wrap: nowrap;
+  /* Verhindert das Umfließen der Kinder */
   margin: 0;
   padding: 0;
   width: 100%;
@@ -128,10 +128,11 @@ html, body {
 }
 
 
-h1{
+h1 {
   font-family: Arial, Helvetica, sans-serif;
 }
-h2{
+
+h2 {
   font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -141,9 +142,9 @@ h2{
     flex-direction: column;
   }
 
-  .game-list, .main-content {
+  .game-list,
+  .main-content {
     width: 100%;
     height: auto;
   }
-}
-</style>
+}</style>
