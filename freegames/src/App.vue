@@ -35,7 +35,10 @@ export default {
     async fetchGames() {
       const options = {
         method: 'GET',
-        url: 'https://free-to-play-games-database.p.rapidapi.com/api/games',
+        url: 'https://free-to-play-games-database.p.rapidapi.com/api/games', // api/filter machen für Filter falls tag verwendet wird 
+        params: {
+          //tag:'anime' für bestimmte Kategorien anzeigen
+        },
 
         headers: {
           'X-RapidAPI-Key': '6a308b9d12msh4e276d6fecfde35p1d4559jsn7f5a98e751ec',
