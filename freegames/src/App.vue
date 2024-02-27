@@ -71,6 +71,8 @@ export default {
           description: game.short_description,
           image: game.thumbnail,
         }));
+        this.allGames = [...this.allGames, ...this.games];
+        this.filteredGames = this.allGames;
       } catch (error) {
         console.error('Fehler beim Laden der Spiele:', error);
       }
@@ -85,14 +87,14 @@ export default {
       });
     },
     searchGames() {
-      if (this.searchQuery) {
-
+      if (this.searchQuery && Array.isArray(this.games)) { // Check if games is an array
+        // Filter the games based on the search query
         this.filteredGames = this.games.filter(game =>
           game.name.toLowerCase().includes(this.searchQuery.toLowerCase())
         );
       } else {
-
-        this.filteredGames = this.games;
+        // If no search query, or games is not an array, reset the filteredGames to all games
+        this.filteredGames = this.games || []; // Use an empty array if this.games is undefined ..
       }
     },
     watch: {
@@ -102,6 +104,7 @@ export default {
     },
   },
   created() {
+    this.games = []; // Initialize games as an empty array
     this.setCategory('shooter');
   },
 };
