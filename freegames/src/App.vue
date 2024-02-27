@@ -1,9 +1,18 @@
 <template>
   <div id="app" class="container">
+    <div class="search-container">
+      <input type="text" v-model="searchQuery" @input="searchGames" placeholder="Search games..." />
+    </div>
+    <div class="category-selector">
+      <h1>Categories</h1>
+      <button v-for="category in categories" :key="category" @click="setCategory(category)">
+        {{ category }}
+      </button>
+    </div>
     <div class="game-list">
-      <h1>Free Games</h1>
+      <h1>Games</h1>
       <ul>
-        <li v-for="game in games" :key="game.id" @click="selectGame(game)">
+        <li v-for="game in filteredGames" :key="game.id" @click="selectGame(game)">
           {{ game.name }}
         </li>
       </ul>
@@ -20,7 +29,6 @@
   </div>
 </template>
 <script>
-// Importiere Axios
 import axios from 'axios';
 
 export default {
@@ -29,17 +37,26 @@ export default {
     return {
       games: [],
       selectedGame: null,
+      currentCategory: null,
+      categories: [
+        'mmorpg', 'shooter', 'strategy', 'moba', 'racing', 'sports', 'social',
+        'sandbox', 'open-world', 'survival', 'pvp', 'pve', 'pixel', 'voxel',
+        'zombie', 'turn-based', 'first-person', 'third-Person', 'top-down',
+        'tank', 'space', 'sailing', 'side-scroller', 'superhero', 'permadeath',
+        'card', 'battle-royale', 'mmo', 'mmofps', 'mmotps', '3d', '2d', 'anime',
+        'fantasy', 'sci-fi', 'fighting', 'action-rpg', 'action', 'military',
+        'martial-arts', 'flight', 'low-spec', 'tower-defense', 'horror', 'mmorts'
+      ],
+      searchQuery: '',
+      filteredGames: [],
     };
   },
   methods: {
-    async fetchGames() {
+    async fetchGames(category) {
       const options = {
         method: 'GET',
-        url: 'https://free-to-play-games-database.p.rapidapi.com/api/games', // api/filter machen für Filter falls tag verwendet wird 
-        params: {
-          //tag:'anime' für bestimmte Kategorien anzeigen
-        },
-
+        url: 'https://free-to-play-games-database.p.rapidapi.com/api/filter',
+        params: { tag: category },
         headers: {
           'X-RapidAPI-Key': '6a308b9d12msh4e276d6fecfde35p1d4559jsn7f5a98e751ec',
           'X-RapidAPI-Host': 'free-to-play-games-database.p.rapidapi.com'
@@ -48,15 +65,11 @@ export default {
 
       try {
         const response = await axios.request(options);
-        console.log(response.data);
-        // Anpassung der Daten, um sie in die Vue-Komponente zu integrieren
         this.games = response.data.map(game => ({
           id: game.id,
           name: game.title,
           description: game.short_description,
           image: game.thumbnail,
-          category:game.category
-          
         }));
       } catch (error) {
         console.error('Fehler beim Laden der Spiele:', error);
@@ -65,9 +78,31 @@ export default {
     selectGame(game) {
       this.selectedGame = game;
     },
+    setCategory(category) {
+      this.currentCategory = category;
+      this.fetchGames(category).then(() => {
+        this.filteredGames = this.games;
+      });
+    },
+    searchGames() {
+      if (this.searchQuery) {
+
+        this.filteredGames = this.games.filter(game =>
+          game.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+        );
+      } else {
+
+        this.filteredGames = this.games;
+      }
+    },
+    watch: {
+      games(newGames) {
+        this.filteredGames = newGames;
+      }
+    },
   },
   created() {
-    this.fetchGames();
+    this.setCategory('shooter');
   },
 };
 </script>
@@ -79,26 +114,77 @@ body {
   padding: 0;
   width: 100%;
   height: 100%;
-  /* Zusätzliche Stile, falls benötigt */
 }
 
-/* Grundlegende Stile */
+.search-bar {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+}
+
+.search-bar input[type="text"] {
+  padding: 10px;
+  margin-bottom: 20px;
+  width: 200px;
+}
+
+.search-container {
+  position: fixed;
+  right: 20px;
+  top: 20px;
+  z-index: 1000;
+}
+
+.search-container input[type="text"] {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
 .container {
   display: flex;
   flex-wrap: nowrap;
-  /* Verhindert das Umfließen der Kinder */
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
+  margin-left: 250px;
+  width: calc(100% - 250px);
+  height: 100vh;
 }
 
+
+.category-selector {
+  background-color: #333;
+  padding: 20px;
+  width: 250px;
+  height: 100vh;
+  overflow-y: auto;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 100;
+}
+
+button {
+  background-color: transparent;
+  color: white;
+  padding: 10px;
+  margin-bottom: 1px;
+  border: none;
+  width: calc(100% - 20px);
+  text-align: left;
+  border-bottom: 1px solid grey;
+  font-family: Arial, Helvetica, sans-serif;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #555;
+}
 
 .game-list {
   background-color: #333;
   color: white;
   width: 250px;
-  padding: 20px;
+  padding: 60px;
   height: 100vh;
   overflow-y: auto;
   font-family: Arial, Helvetica, sans-serif;
@@ -130,24 +216,31 @@ body {
   margin-bottom: 20px;
 }
 
-
 h1 {
   font-family: Arial, Helvetica, sans-serif;
+  color: white;
 }
 
 h2 {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-/* Responsives Design */
 @media (max-width: 768px) {
-  .container {
-    flex-direction: column;
-  }
-
-  .game-list,
-  .main-content {
+  .category-selector {
+    position: static;
     width: 100%;
     height: auto;
   }
-}</style>
+
+  .container {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .search-bar {
+    position: static;
+    width: 100%;
+    padding: 10px;
+  }
+}
+</style>
