@@ -20,7 +20,13 @@
     <div class="main-content" v-if="selectedGame">
       <h2>{{ selectedGame.name }}</h2>
       <img :src="selectedGame.image" alt="Game cover" class="game-cover" />
-      <p>{{ selectedGame.description }}</p>
+      <p>Description: {{ selectedGame.description }}</p>
+      <p>URL: <a :href="selectedGame.url" target="_blank">{{ selectedGame.url }}</a></p>
+      <p>Genre: {{ selectedGame.genre }}</p>
+      <p>Platform: {{ selectedGame.platform }}</p>
+      <p>Publisher: {{ selectedGame.publisher }}</p>
+      <p>Developer: {{ selectedGame.developer }}</p>
+      <p>Date: {{ selectedGame.date }}</p>
     </div>
     <div class="main-content" v-else>
       <h2>Welcome</h2>
@@ -45,7 +51,7 @@ export default {
         'tank', 'space', 'sailing', 'side-scroller', 'superhero', 'permadeath',
         'card', 'battle-royale', 'mmo', 'mmofps', 'mmotps', '3d', '2d', 'anime',
         'fantasy', 'sci-fi', 'fighting', 'action-rpg', 'action', 'military',
-        'martial-arts', 'flight', 'low-spec', 'tower-defense', 'horror', 'mmorts'
+        'martial-arts', 'flight', 'low-spec', 'tower-defense', 'horror', 'mmorts',''
       ],
       searchQuery: '',
       filteredGames: [],
@@ -62,7 +68,6 @@ export default {
           'X-RapidAPI-Host': 'free-to-play-games-database.p.rapidapi.com'
         }
       };
-
       try {
         const response = await axios.request(options);
         this.games = response.data.map(game => ({
@@ -70,15 +75,21 @@ export default {
           name: game.title,
           description: game.short_description,
           image: game.thumbnail,
+          url: game.game_url,
+          developer: game.developer,
+          platform: game.platform,
+          date:game.release_date,
+          genre:game.genre,
+          publisher:game.publisher
+
         }));
-        this.allGames = [...this.allGames, ...this.games];
-        this.filteredGames = this.allGames;
       } catch (error) {
         console.error('Fehler beim Laden der Spiele:', error);
       }
     },
     selectGame(game) {
       this.selectedGame = game;
+      console.log('Selected game description:', game.description);
     },
     setCategory(category) {
       this.currentCategory = category;
@@ -95,11 +106,6 @@ export default {
       } else {
         // If no search query, or games is not an array, reset the filteredGames to all games
         this.filteredGames = this.games || []; // Use an empty array if this.games is undefined ..
-      }
-    },
-    watch: {
-      games(newGames) {
-        this.filteredGames = newGames;
       }
     },
   },
