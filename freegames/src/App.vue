@@ -4,10 +4,10 @@
       <input type="text" v-model="searchQuery" @input="searchGames" placeholder="Search games..." />
     </div>
     <div class="category-selector">
-      <h1>Categories</h1>
-      <button v-for="category in categories" :key="category" @click="setCategory(category)">
-        {{ category }}
-      </button>
+        <h1>Categories</h1>
+        <button v-for="category in categories" :key="category" @click="setCategory(category)">
+          {{ category }}
+        </button>
     </div>
     <div class="game-list">
       <h1>Games</h1>
@@ -18,16 +18,23 @@
       </ul>
     </div>
     <div class="main-content" v-if="selectedGame">
-      <h2>{{ selectedGame.name }}</h2>
-      <img :src="selectedGame.image" alt="Game cover" class="game-cover" />
-      <p>Description: {{ selectedGame.description }}</p>
-      <p>URL: <a :href="selectedGame.url" target="_blank">{{ selectedGame.url }}</a></p>
-      <p>Genre: {{ selectedGame.genre }}</p>
-      <p>Platform: {{ selectedGame.platform }}</p>
-      <p>Publisher: {{ selectedGame.publisher }}</p>
-      <p>Developer: {{ selectedGame.developer }}</p>
-      <p>Date: {{ selectedGame.date }}</p>
+      <div class="Hure">
+        <div class="main-content-title">
+          <h2>{{ selectedGame.name }}</h2>
+          <img :src="selectedGame.image" alt="Game cover" class="game-cover" />
+        </div>
+        <div class="main-content-content">
+          <p>{{ selectedGame.description }}</p>
+          <p>URL: <a :href="selectedGame.url" target="_blank">{{ selectedGame.url }}</a></p>
+          <p>Genre: {{ selectedGame.genre }}</p>
+          <p>Platform: {{ selectedGame.platform }}</p>
+          <p>Publisher: {{ selectedGame.publisher }}</p>
+          <p>Developer: {{ selectedGame.developer }}</p>
+          <p>Date: {{ selectedGame.date }}</p>
+        </div>
+      </div>
     </div>
+
     <div class="main-content" v-else>
       <h2>Welcome</h2>
       <p>Select a game to view its details.</p>
@@ -45,13 +52,13 @@ export default {
       selectedGame: null,
       currentCategory: null,
       categories: [
-        'mmorpg', 'shooter', 'strategy', 'moba', 'racing', 'sports', 'social',
+        'shooter', 'strategy', 'moba', 'racing', 'sports', 'social',
         'sandbox', 'open-world', 'survival', 'pvp', 'pve', 'pixel', 'voxel',
         'zombie', 'turn-based', 'first-person', 'third-Person', 'top-down',
         'tank', 'space', 'sailing', 'side-scroller', 'superhero', 'permadeath',
         'card', 'battle-royale', 'mmo', 'mmofps', 'mmotps', '3d', '2d', 'anime',
         'fantasy', 'sci-fi', 'fighting', 'action-rpg', 'action', 'military',
-        'martial-arts', 'flight', 'low-spec', 'tower-defense', 'horror', 'mmorts',''
+        'martial-arts', 'flight', 'lowj-spec', 'tower-defense', 'horror', 'mmorts', 'mmorpg', ''
       ],
       searchQuery: '',
       filteredGames: [],
@@ -78,9 +85,9 @@ export default {
           url: game.game_url,
           developer: game.developer,
           platform: game.platform,
-          date:game.release_date,
-          genre:game.genre,
-          publisher:game.publisher
+          date: game.release_date,
+          genre: game.genre,
+          publisher: game.publisher
 
         }));
       } catch (error) {

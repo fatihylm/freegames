@@ -51,7 +51,7 @@ body {
   overflow-y: auto;
   position: fixed;
   left: 0;
-  top: 0;
+  top: 150px;
   z-index: 100;
 }
 
@@ -81,6 +81,7 @@ button:hover {
   height: 100vh;
   overflow-y: auto;
   font-family: Arial, Helvetica, sans-serif;
+  margin-top:150px;
 }
 
 .game-list ul {
@@ -100,7 +101,8 @@ button:hover {
 
 .main-content {
   flex-grow: 1;
-  padding: 20px;
+  padding-top: 150px;
+
 }
 
 .game-cover {
@@ -116,18 +118,17 @@ h1 {
 
 h2 {
   font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+  font-size: 38px;
 }
 
-/* Erhöht die Größe des Bildes */
 .game-cover {
   width: 50%;
-  /* oder eine spezifische Pixelgröße, z.B. 500px */
   height: auto;
-  /* behält das Seitenverhältnis bei */
   display: block;
-  /* verhindert, dass es als Inline-Element behandelt wird */
   margin: 0 auto;
-  /* zentriert das Bild, falls es kleiner als der Container ist */
+  border-bottom: 2px solid #ccc; /* Graue Trennlinie */
+  padding-bottom: 20px; /* Abstand zwischen Bild und Trennlinie */
 }
 
 .main-content p {
@@ -136,6 +137,7 @@ h2 {
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   font-size: large;
 }
+
 
 @media (max-width: 768px) {
   .category-selector {
@@ -154,4 +156,40 @@ h2 {
     width: 100%;
     padding: 10px;
   }
+
+
 }
+
+
+.logo-container {
+  height: 150px;
+  position: absolute;
+  top: 0px; 
+  display: flex; 
+  align-items: center; 
+  z-index: 102; 
+}
+
+.logo {
+  width: 100px;
+  height: auto; 
+  margin-left: 20px;
+}
+
+.logo-text {
+  font-family: 'Roboto', sans-serif;
+  font-size: 50px; 
+  font-weight: 700;
+  color: black; 
+  margin-left: 10px; 
+  text-shadow: 3px 3px 5px rgba(0,0,0,0.3);
+}
+
+.Hure
+{
+  border: solid 1px black;
+  margin-left: 100px;
+  margin-right: 100px;
+  background-color: #efefef;
+}
+
