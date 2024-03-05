@@ -18,7 +18,7 @@
       </ul>
     </div>
     <div class="main-content" v-if="selectedGame">
-      <div class="Hure">
+      <div class="Content">
         <div class="main-content-title">
           <h2>{{ selectedGame.name }}</h2>
           <img :src="selectedGame.image" alt="Game cover" class="game-cover" />
@@ -118,7 +118,6 @@ export default {
   },
   created() {
     this.games = []; // Initialize games as an empty array
-    this.setCategory('shooter');
   },
 };
 </script>
